@@ -81,9 +81,10 @@ class _DefaultSocialTextFieldControllerState
     _subscribeToStreamIfNeeded();
   }
 
-  void _subscribeToStreamIfNeeded() async{
+  void _subscribeToStreamIfNeeded() async {
     await _streamSubscription?.cancel();
-    _streamSubscription = widget.textEditingController.subscribeToDetection(onDetectContent);
+    _streamSubscription =
+        widget.textEditingController.subscribeToDetection(onDetectContent);
   }
 
   ///Shows the widget that hes been set with the [widget.detectionBuilders]. return empty Container if noting found
@@ -101,7 +102,7 @@ class _DefaultSocialTextFieldControllerState
         if (widget.textEditingController.detectionTextStyles
             .containsKey(DetectedType.plain_text)) {
           defaultTextStyle = widget.textEditingController
-              .detectionTextStyles[DetectedType.plain_text]!;
+              .detectionTextStyles[DetectedType.plain_text]!.validTextStyle;
         }
         var estimatedSize = getTextRectSize(
             width: widget.focusNode.size.width,

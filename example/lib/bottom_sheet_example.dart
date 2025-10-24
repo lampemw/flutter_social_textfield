@@ -8,12 +8,14 @@ class BottomSheetControllerExampleScreen extends StatefulWidget {
   const BottomSheetControllerExampleScreen({Key? key}) : super(key: key);
 
   @override
-  _BottomSheetControllerExampleScreenState createState() => _BottomSheetControllerExampleScreenState();
+  _BottomSheetControllerExampleScreenState createState() =>
+      _BottomSheetControllerExampleScreenState();
 }
 
-class _BottomSheetControllerExampleScreenState extends State<BottomSheetControllerExampleScreen> {
-
-  SocialTextEditingController _socialTextEditingController = SocialTextEditingController();
+class _BottomSheetControllerExampleScreenState
+    extends State<BottomSheetControllerExampleScreen> {
+  SocialTextEditingController _socialTextEditingController =
+      SocialTextEditingController();
   late final StreamSubscription<SocialContentDetection> _streamSubscription;
 
   GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
@@ -30,19 +32,33 @@ class _BottomSheetControllerExampleScreenState extends State<BottomSheetControll
 
   @override
   void initState() {
-
-    _streamSubscription = _socialTextEditingController.subscribeToDetection(onDetectContent);
+    _streamSubscription =
+        _socialTextEditingController.subscribeToDetection(onDetectContent);
     _socialTextEditingController
-      ..text = "Lorem ipsum @dolor sit amet, consectetur adipiscing elit, sed do eiusmod @tempor incididunt ut labore et dolore magna aliqua. Ut #tellus elementum sagittis vitae et. Id #velit ut tortor pretium viverra suspendisse. Massa placerat duis ultricies lacus sed. @Placerat in egestas erat imperdiet sed euismod nisi. Velit scelerisque in dictum non consectetur. Massa id neque aliquam vestibulum morbi blandit. Purus sit amet volutpat consequat mauris nunc congue nisi. Ut diam quam nulla porttitor massa id. Sed faucibus turpis in eu mi. Rhoncus mattis rhoncus urna neque. Vel eros donec ac odio. Elit scelerisque mauris pellentesque pulvinar pellentesque habitant morbi tristique senectus. Lobortis elementum nibh tellus molestie nunc non blandit massa enim. Amet consectetur adipiscing elit duis tristique @sollicitudin nibh sit amet.\nhttp://www.google.com"
-      ..setTextStyle(DetectedType.mention, TextStyle(color: Colors.purple,backgroundColor: Colors.purple.withAlpha(50)))
-      ..setTextStyle(DetectedType.url, TextStyle(color: Colors.blue, decoration: TextDecoration.underline))
-      ..setTextStyle(DetectedType.hashtag, TextStyle(color: Colors.blue, fontWeight: FontWeight.w600));
+      ..text =
+          "Lorem ipsum @dolor sit amet, consectetur adipiscing elit, sed do eiusmod @tempor incididunt ut labore et dolore magna aliqua. Ut #tellus elementum sagittis vitae et. Id #velit ut tortor pretium viverra suspendisse. Massa placerat duis ultricies lacus sed. @Placerat in egestas erat imperdiet sed euismod nisi. Velit scelerisque in dictum non consectetur. Massa id neque aliquam vestibulum morbi blandit. Purus sit amet volutpat consequat mauris nunc congue nisi. Ut diam quam nulla porttitor massa id. Sed faucibus turpis in eu mi. Rhoncus mattis rhoncus urna neque. Vel eros donec ac odio. Elit scelerisque mauris pellentesque pulvinar pellentesque habitant morbi tristique senectus. Lobortis elementum nibh tellus molestie nunc non blandit massa enim. Amet consectetur adipiscing elit duis tristique @sollicitudin nibh sit amet.\nhttp://www.google.com"
+      ..setTextStyle(
+          DetectedType.mention,
+          DetectionTextStyle(
+              validTextStyle: TextStyle(
+                  color: Colors.purple,
+                  backgroundColor: Colors.purple.withAlpha(50))))
+      ..setTextStyle(
+          DetectedType.url,
+          DetectionTextStyle(
+              validTextStyle: TextStyle(
+                  color: Colors.blue, decoration: TextDecoration.underline)))
+      ..setTextStyle(
+          DetectedType.hashtag,
+          DetectionTextStyle(
+              validTextStyle:
+                  TextStyle(color: Colors.blue, fontWeight: FontWeight.w600)));
 
     super.initState();
   }
 
-  void showMentionBottomSheet(){
-    if(_panelController.isPanelClosed){
+  void showMentionBottomSheet() {
+    if (_panelController.isPanelClosed) {
       _panelController.animatePanelToPosition(0.4);
     }
     // if(isShowingModalBottomSheet){
@@ -66,11 +82,11 @@ class _BottomSheetControllerExampleScreenState extends State<BottomSheetControll
     // }).whenComplete(() => isShowingModalBottomSheet = false);
   }
 
-  void onDetectContent(SocialContentDetection detection){
-    if(detection.type == DetectedType.mention){
+  void onDetectContent(SocialContentDetection detection) {
+    if (detection.type == DetectedType.mention) {
       showMentionBottomSheet();
-    }else{
-      if(_panelController.isPanelOpen){
+    } else {
+      if (_panelController.isPanelOpen) {
         _panelController.close();
       }
     }
@@ -78,7 +94,6 @@ class _BottomSheetControllerExampleScreenState extends State<BottomSheetControll
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
@@ -88,14 +103,14 @@ class _BottomSheetControllerExampleScreenState extends State<BottomSheetControll
         maxHeight: MediaQuery.of(context).size.height * 0.7,
         minHeight: 0.0,
         controller: _panelController,
-        panelBuilder: (scrollController){
+        panelBuilder: (scrollController) {
           return ListView.builder(
-            controller: scrollController,
-              itemBuilder: (context,index){
+              controller: scrollController,
+              itemBuilder: (context, index) {
                 return ListTile(
                   title: Text("Title $index"),
                 );
-          });
+              });
         },
         body: Container(
           padding: EdgeInsets.all(16),

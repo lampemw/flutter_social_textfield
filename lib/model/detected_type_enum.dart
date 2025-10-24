@@ -5,4 +5,5 @@ enum DetectedType {
   url,
   plain_text,
   emoji,
+  workflow_variable,
 }

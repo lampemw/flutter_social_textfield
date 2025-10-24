@@ -10,10 +10,12 @@ class DefaultControllerAboveExampleScreen extends StatefulWidget {
   const DefaultControllerAboveExampleScreen({Key? key}) : super(key: key);
 
   @override
-  _DefaultControllerAboveExampleScreenState createState() => _DefaultControllerAboveExampleScreenState();
+  _DefaultControllerAboveExampleScreenState createState() =>
+      _DefaultControllerAboveExampleScreenState();
 }
 
-class _DefaultControllerAboveExampleScreenState extends State<DefaultControllerAboveExampleScreen> {
+class _DefaultControllerAboveExampleScreenState
+    extends State<DefaultControllerAboveExampleScreen> {
   late final SocialTextEditingController _textEditingController;
   late final TextRange lastDetectedRange;
 
@@ -21,7 +23,8 @@ class _DefaultControllerAboveExampleScreenState extends State<DefaultControllerA
   FocusNode _focusNode = FocusNode();
   ScrollController _scrollController = ScrollController();
 
-  SocialContentDetection lastDetection = SocialContentDetection(DetectedType.plain_text, TextRange.empty, "");
+  SocialContentDetection lastDetection =
+      SocialContentDetection(DetectedType.plain_text, TextRange.empty, "");
 
   late final StreamSubscription<SocialContentDetection> _streamSubscription;
 
@@ -39,14 +42,28 @@ class _DefaultControllerAboveExampleScreenState extends State<DefaultControllerA
     super.initState();
     _textEditingController = SocialTextEditingController()
       ..text = ""
-      ..setTextStyle(DetectedType.mention, TextStyle(color: Colors.purple,backgroundColor: Colors.purple.withAlpha(50)))
-      ..setTextStyle(DetectedType.url, TextStyle(color: Colors.blue, decoration: TextDecoration.underline))
-      ..setTextStyle(DetectedType.hashtag, TextStyle(color: Colors.blue, fontWeight: FontWeight.w600));
+      ..setTextStyle(
+          DetectedType.mention,
+          DetectionTextStyle(
+              validTextStyle: TextStyle(
+                  color: Colors.purple,
+                  backgroundColor: Colors.purple.withAlpha(50))))
+      ..setTextStyle(
+          DetectedType.url,
+          DetectionTextStyle(
+              validTextStyle: TextStyle(
+                  color: Colors.blue, decoration: TextDecoration.underline)))
+      ..setTextStyle(
+          DetectedType.hashtag,
+          DetectionTextStyle(
+              validTextStyle:
+                  TextStyle(color: Colors.blue, fontWeight: FontWeight.w600)));
 
-    _streamSubscription = _textEditingController.subscribeToDetection(onDetectContent);
+    _streamSubscription =
+        _textEditingController.subscribeToDetection(onDetectContent);
   }
 
-  void onDetectContent(SocialContentDetection detection){
+  void onDetectContent(SocialContentDetection detection) {
     lastDetection = detection;
   }
 
@@ -65,7 +82,7 @@ class _DefaultControllerAboveExampleScreenState extends State<DefaultControllerA
         child: Column(
           children: [
             Expanded(
-              child: ListView.builder(itemBuilder: (context, index){
+              child: ListView.builder(itemBuilder: (context, index) {
                 return ListTile(
                   leading: CircleAvatar(
                     child: Icon(Icons.people_alt_sharp),
@@ -86,79 +103,89 @@ class _DefaultControllerAboveExampleScreenState extends State<DefaultControllerA
                   maxLines: 3,
                   minLines: 1,
                   decoration: InputDecoration(
-                    hintText: "Type your message",
-                    // border: OutlineInputBorder()
-                    suffix: IconButton(icon: Icon(Icons.send),onPressed: (){},)
-                  ),
+                      hintText: "Type your message",
+                      // border: OutlineInputBorder()
+                      suffix: IconButton(
+                        icon: Icon(Icons.send),
+                        onPressed: () {},
+                      )),
                 ),
               ),
             ),
           ],
         ),
         detectionBuilders: {
-          DetectedType.mention:(context)=>mentionContent(height),
-          DetectedType.hashtag:(context)=>hashtagContent(height),
-          DetectedType.url:(context)=>urlContent(height)
+          DetectedType.mention: (context) => mentionContent(height),
+          DetectedType.hashtag: (context) => hashtagContent(height),
+          DetectedType.url: (context) => urlContent(height)
         },
       ),
     );
   }
 
-  PreferredSize mentionContent(double height){
-    return PreferredSize(
-      child: Container(
-        decoration: BoxDecoration(
-          color: Colors.grey,
-          borderRadius: BorderRadius.only(topLeft: Radius.circular(16),topRight: Radius.circular(16)),
-          boxShadow: [
-            BoxShadow(offset: Offset(0,-8),color: Colors.black12,blurRadius: 4)
-          ]
-        ),
-        child: ListView.builder(itemBuilder: (context,index)=>
-            ListTile(
-              title: Text("@user_$index"),
-              onTap: (){
-                _textEditingController.replaceRange("@user_$index", lastDetection.range);
-              },
-            )),
-      ),
-      preferredSize: Size.fromHeight(height),);
-  }
-
-  PreferredSize hashtagContent(double height){
+  PreferredSize mentionContent(double height) {
     return PreferredSize(
       child: Container(
         decoration: BoxDecoration(
             color: Colors.grey,
-            borderRadius: BorderRadius.only(topLeft: Radius.circular(16),topRight: Radius.circular(16)),
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(16), topRight: Radius.circular(16)),
             boxShadow: [
-              BoxShadow(offset: Offset(0,-8),color: Colors.black12,blurRadius: 4)
-            ]
-        ),
-        child: ListView.builder(itemBuilder: (context,index)=>
-            ListTile(
-              title: Text("#hashtag_$index"),
-              onTap: (){
-                _textEditingController.replaceRange("#hashtag_$index", lastDetection.range);
-              },
-            )),
+              BoxShadow(
+                  offset: Offset(0, -8), color: Colors.black12, blurRadius: 4)
+            ]),
+        child: ListView.builder(
+            itemBuilder: (context, index) => ListTile(
+                  title: Text("@user_$index"),
+                  onTap: () {
+                    _textEditingController.replaceRange(
+                        "@user_$index", lastDetection.range);
+                  },
+                )),
       ),
-      preferredSize: Size.fromHeight(height),);
+      preferredSize: Size.fromHeight(height),
+    );
   }
 
-  PreferredSize urlContent(double height){
+  PreferredSize hashtagContent(double height) {
     return PreferredSize(
       child: Container(
-          alignment: Alignment.center,
-          child: Text("A Website for url content"),
         decoration: BoxDecoration(
             color: Colors.grey,
-            borderRadius: BorderRadius.only(topLeft: Radius.circular(16),topRight: Radius.circular(16)),
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(16), topRight: Radius.circular(16)),
             boxShadow: [
-              BoxShadow(offset: Offset(0,-8),color: Colors.black12,blurRadius: 4)
-            ]
-        ),
+              BoxShadow(
+                  offset: Offset(0, -8), color: Colors.black12, blurRadius: 4)
+            ]),
+        child: ListView.builder(
+            itemBuilder: (context, index) => ListTile(
+                  title: Text("#hashtag_$index"),
+                  onTap: () {
+                    _textEditingController.replaceRange(
+                        "#hashtag_$index", lastDetection.range);
+                  },
+                )),
       ),
-      preferredSize: Size.fromHeight(height),);
+      preferredSize: Size.fromHeight(height),
+    );
+  }
+
+  PreferredSize urlContent(double height) {
+    return PreferredSize(
+      child: Container(
+        alignment: Alignment.center,
+        child: Text("A Website for url content"),
+        decoration: BoxDecoration(
+            color: Colors.grey,
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(16), topRight: Radius.circular(16)),
+            boxShadow: [
+              BoxShadow(
+                  offset: Offset(0, -8), color: Colors.black12, blurRadius: 4)
+            ]),
+      ),
+      preferredSize: Size.fromHeight(height),
+    );
   }
 }
